@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head><style>
+body{margin:0px;}
+svg {
+  //border: solid 1px #666;
+  overflow: hidden;
+}
+
+path {
+  fill: yellow;
+  stroke: #000;
+  stroke-width: .5px;
+}
+
+circle {
+  fill: #ccc;
+  stroke: #000;
+  pointer-events: none;
+}
+
+p {font: 48px "Sans Serif" ;margin-left:36px;}
+</style></head>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<div id="chart" style="width:1280px;height:620px"></div>
+<p>Your d3 learning curve</hp>
+<script>
+var width = 1280,
+    height = 620;
+
+var points=d3.range(0,1.01,.01);
+
+var sigmoid =function(x) {return 1/(1+Math.exp(19.55-39.109*x));}
+
+var x=d3.scale.linear().range([10,width-10]);
+
+var y=d3.scale.linear().range([height-50,50]);
+var sigmoidScaled = function(x) {return y(sigmoid((x+.25))+(50*x/width));}
+var moveCircle;
+
+var line = d3.svg.line()
+    .x(x).interpolate("basis")
+    .y(sigmoidScaled);
+
+
+
+var svg = d3.select("#chart")
+  .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+
+svg.append("line").attr("x1",10).attr("x2",width-10).attr("y1",height-10).attr("y2",height-10).style("stroke","black").style("stroke-width",.25)
+//svg.append("line").attr("x1",x(.5)).attr("x2",x(.5)).attr("y1",10).attr("y2",height-10).style("stroke","black").style("stroke-width",.25)
+
+
+
+svg.selectAll("path").data([points])
+  .enter().append("path")
+    .style("fill","none").style("stroke-width",3)
+    .style("stroke","black")
+    .attr("d", line).on("mouseon",function() {moveCircle(d3.event.x);})    
+    ;
+
+svg.selectAll(".l2").data([0.01]).enter().append("path")
+   .style("fill","none").style("stroke-width",4)
+  .style("stroke","gold").classed("l2",1)
+   .attr("d", line)
+;
+
+
+
+
+svg.selectAll("rect").data(points)
+  .enter().append("rect")
+    .style("fill","white").style("opacity",.01).style("stroke","none")
+    .attr("x",x).attr("width",x(.01))
+    .attr("y",y(1)).attr("height",y(0)-y(1))
+    .on("mouseover",function(d) {update(d);})
+
+svg.append("circle").datum(.01).attr({cx:x,cy:sigmoidScaled,r:20}).style({fill:"white",stroke:"black"})
+
+function update(d) {
+  d3.select("circle").datum(d).attr({cx:x,cy:sigmoidScaled})
+  d3.select(".l2").datum(d3.range(0,d+.01,.01)).attr("d", line)
+
+}
+
+
+
+</script>
+
+
+</body>
+</html>
