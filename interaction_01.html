@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head><style>
+body{margin:0px;}
+svg {
+  //border: solid 1px #666;
+  overflow: hidden;
+}
+
+path {
+  fill: yellow;
+  stroke: #000;
+  stroke-width: .5px;
+}
+
+circle {
+  fill: #ccc;
+  stroke: #000;
+  pointer-events: none;
+}
+
+p {font: 48px "Sans Serif" ;margin-left:36px;}
+</style></head>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<div id="chart" style="width:1280px;height:620px"></div>
+
+<script>
+var w=960,h=500,flag=0;
+var svg=d3.select("#chart").append("svg").attr("width",w).attr("height",h);
+var myRect=svg
+  .append( "rect").attr({x:100,y:100,width:100,height:100})
+  .style("fill","steelblue");
+
+myRect.on("click",function() {
+  flag=1-flag;
+  myRect.style("fill", flag?"darkorange":"steelblue");
+})
+
+
+
+</script>
+
+
+</body>
+</html>
