@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<<<<<<< HEAD
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
@@ -68,4 +69,86 @@
 			
 		</script>
 	</body>
+=======
+<meta charset="utf-8">
+<head><style>
+body{margin:0px;}
+svg {
+  //border: solid 1px #666;
+  overflow: hidden;
+}
+
+path {
+  fill: yellow;
+  stroke: #000;
+  stroke-width: .5px;
+}
+
+circle {
+  fill: #ccc;
+  stroke: #000;
+  pointer-events: none;
+}
+
+p {font: 48px "Sans Serif" ;margin-left:36px;}
+select {font: 24px "Sans Serif";margin-left:36px;}
+</style></head>
+<body>
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<div id="chart" style="width:1280px;height:620px"></div>
+<select>
+  <option value="linear">Linear</option>
+  <option value="sqrt">Square root</option>
+  <option value="log">Logarithmic</option>
+  <option value="pow">Power scale (square)</option>
+</select>
+
+<p>Scales</hp>
+<script>
+var width = 1280,
+    height = 620;
+
+var points=d3.range(0,1.01,.01);
+
+var x=d3.scale.linear().range([10,width-10]);
+
+var moveCircle;
+
+var lines = {linear:d3.svg.line()
+    .x(x).interpolate("basis")
+    .y(d3.scale.linear().range([height-50,50])),
+    sqrt:d3.svg.line()
+    .x(x).interpolate("basis")
+    .y(d3.scale.sqrt().range([height-50,50])),
+    pow:d3.svg.line()
+    .x(x).interpolate("basis")
+    .y(d3.scale.pow().exponent(2).range([height-50,50])),
+    log:d3.svg.line()
+    .x(x).interpolate("basis")
+    .y(function(d) {return d3.scale.log().range([height-50,50])(d*9+1)})}
+
+var svg = d3.select("#chart")
+  .append("svg")
+    .attr("width", width)
+    .attr("height", height)
+
+svg.append("path").attr("d","M10,50v"+(height-100)+"h"+(width-20)).style("stroke","black").style("stroke-width",.25).style("fill","none")
+
+
+
+svg.selectAll(".curve").data([points])
+  .enter().append("path").classed("curve",1)
+    .style("fill","none").style("stroke-width",3)
+    .style("stroke","black")
+    .attr("d", lines.linear);
+
+
+d3.select("select").on("change",function() {d3.select(".curve").transition().attr("d",lines[d3.select(this).property("value")])})
+
+
+</script>
+
+
+</body>
+>>>>>>> last bits of code for the repo
 </html>
